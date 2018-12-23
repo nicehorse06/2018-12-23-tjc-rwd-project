@@ -1,0 +1,248 @@
+<?php
+//載入 config.php 檔案。
+require("./include/config.php");
+require_once './php/functions.php';
+?>
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <title>錄音檔列表</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!-- 給行動裝置或平板顯示用，根據裝置寬度而定，初始放大比例 1 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="shortcut icon" href="./images/favicon.ico">
+  </head>
+  <body>
+    <?php
+      $searchDate=$_POST['searchDate'];
+      $searchsubject=$_POST['searchsubject'];
+      $searchpm=$_POST['searchpm'];
+      if( $searchDate =='' && $searchsubject =='' && $searchpm ==''){
+      
+        $searchyear = date(Y);
+        $searchmon = date(m);
+        $searchDate=$searchyear.'-'.$searchmon;
+        
+        $members = get_last_reclist($searchyear,$searchmon,$searchDate,$searchsubject,$searchpm);
+        $searchsubject='講道主題';
+        $searchpm='主領人姓名';  
+      }
+
+      elseif($_POST['searchDate'] !=='' ){
+        $members = get_last_reclist($searchyear,$searchmon,$searchDate,$searchsubject,$searchpm);
+        $searchsubject=$searchsubject;
+      }
+      elseif($_POST['searchsubject'] !=='' ){
+        $members = get_last_reclist($searchyear,$searchmon,$searchDate,$searchsubject,$searchpm);
+        $searchsubject=$searchsubject;
+      }
+      elseif($_POST['searchpm'] !=='' ){
+        $members = get_last_reclist($searchyear,$searchmon,$searchDate,$searchsubject,$searchpm);
+        $searchpm=$searchpm;
+      }
+      elseif($_POST['searchpm'] !='' ){
+        echo 'fine？!'.$searchyear.'syear,'.$searchmon.'smon,'.$searchDate.'sdate,'.$searchsubject.'ssub,'.$searchpm.'spm,';
+      }
+      else{
+        $searchyear = date(Y);
+        $searchmon = date(m);
+        $searchDate=$searchyear.'-'.$searchmon;
+        
+        $members = get_last_reclist($searchyear,$searchmon,$searchDate,$searchsubject,$searchpm);
+        $searchsubject='講道主題';
+        $searchpm='主領人姓名';    
+        //$searchDate=$_POST['searchDate'];
+        //$searchsubject=$_POST['searchsubject'];
+        //$searchpm=$_POST['searchpm'];
+        //$members = get_last_reclist($searchyear,$searchmon,$searchDate,$searchsubject,$searchpm);
+      }
+
+    ?>
+    <!-- 網站內容 -->
+
+    <!-- 搜尋欄位-->
+  
+    <form id="form1" class="searchbox"name="form1" method="post" action="./index.php">
+      <input  class="searchboxtxt" name="searchDate" id="searchDate" type="month" min="2006-01" value="" >
+      <input class="searchboxtxt" name="searchsubject" type="text" id="searchsubject" placeholder=" <?php echo $searchsubject ?> " >
+      <!-- <input name="searchsubject" type="text" id="searchsubject" placeholder="聖靈" /> -->
+      <input class="searchboxtxt" name="searchpm" type="text" id="searchpm" placeholder=" <?php echo $searchpm ?> " > 
+      <!-- <input name="searchpm" type="text" id="searchpm" placeholder="傳道 " /> -->
+      <input type="submit" style="width:0px; overflow:hidden; height:0; padding:0; border:none;" class="button" name="button" id="button" alt="Login" src="../images/search.png" >
+      <div class="search_hsitory">
+      <br>
+      <?php 
+        $searchyear = date(Y);
+        $searchmon = date(m);
+        $nowyear=$searchyear.'-'.$searchmon;
+        if($searchDate == "$nowyear"){
+          echo '';
+        }else{
+          echo '目前搜尋內容為：';
+          if($searchDate !=''){
+            echo '時間：'.$searchDate.'月'; 
+
+              if($searchsubject !=''){
+                echo ', 主題：'.$searchsubject; 
+                  if($searchpm !=''){
+                   echo ', 領會者：'.$searchpm; 
+                  }
+              }
+              else if($searchpm !=''){
+                echo ', 領會者：'.$searchpm; 
+               }
+          }
+          
+          elseif($searchsubject !=''){
+            echo '主題：'.$searchsubject; 
+              if($searchpm !=''){
+              echo ', 領會者：'.$searchpm; 
+              }
+          }  
+          elseif($searchpm !=''){
+            echo '領會者：'.$searchpm; 
+          }
+        }            
+      ?>
+      </div>
+    </form>
+
+    <!-- 資料列表 -->
+    <br>
+    <table id="myTable" class="table rwd-table">
+      <thead>
+      <tr>
+        <th class="title0">日期</th>
+        <th class="title1">主題</th>
+        <th class="title2">主領人</th>
+        <th class="title3">播放</th>
+        <th class="title3">下載</th>
+        <!-- <th class="title3">分享</th>    -->
+        <!-- Full texts   -->
+      </tr>
+      </thead>
+      <?php if($members):?>
+        <?php foreach($members as $member):?>
+          <tr>
+            <td class="tdtxt0 data-th">
+              <?php 
+              if( $searchDate !="$nowyear"){
+                // echo $date(Y).'/'. $date(m);
+                // echo $searchDate;
+                $week=Array("星期日","星期一","星期二","星期三","星期四","星期五","安息日");
+                $date_time=$member['preach_dt'];
+                list($date)=explode(" ", $date_time); //取出日期部份
+                list($Y,$M,$D)=explode("-",$date); //分離出年月日以便製作時戳
+                echo $Y."/".$M."/".$D."  ".$week[date("w", mktime(0,0,0,$M,$D,$Y))];
+
+                $datehour=$member['preach_time'];
+                list($date2)=explode(" ", $datehour); //取出日期部份
+                list($H)=explode(":",$date2); //分離出年月日以便製作時戳
+
+                if( $H <= 12 && $H > 6){
+                  echo ' 上午';
+                }else if($H <= 6 && $H > 0){
+                  echo ' 凌晨';
+                }else if($H >= 12 && $H < 18){
+                  echo ' 下午';
+                }else if($H >= 18 && $H < 24){
+                  echo ' 晚上';
+                }
+              }else{
+                $week=Array("星期日","星期一","星期二","星期三","星期四","星期五","安息日");
+                $date_time=$member['preach_dt'];
+                list($date)=explode(" ", $date_time); //取出日期部份
+                list($Y,$M,$D)=explode("-",$date); //分離出年月日以便製作時戳
+                echo $M."/".$D."  ".$week[date("w", mktime(0,0,0,$M,$D,$Y))];
+
+                $datehour=$member['preach_time'];
+                list($date2)=explode(" ", $datehour); //取出日期部份
+                list($H)=explode(":",$date2); //分離出年月日以便製作時戳
+
+                if( $H <= 12 && $H > 6){
+                  echo ' 上午';
+                }else if($H <= 6 && $H > 0){
+                  echo ' 凌晨';
+                }else if($H >= 12 && $H < 18){
+                  echo ' 下午';
+                }else if($H >= 18 && $H < 24){
+                  echo ' 晚上';
+                }
+                
+                
+              }
+              ?>
+            </td>
+            <!-- <td class="tdtxt0"> -->
+            <?php 
+              // echo $member['preach_dt'];
+              // echo $member['preach_time']; 
+            ?>
+            <!-- </td> -->
+            <td class="tdtxt1 data-th"><?php echo $member['preach_subject'];?></td>
+            <td class="tdtxt2 data-th"><?php echo $member['preach_pm'];?></td>
+            <td class="tdtxt3 data-th">
+              <div class="audio_link" data-link="<?php echo $member['preach_sno'];?>" data-audio="<?php echo '../download/service/'.$Y.'/'.$M.'/'.$member['file_name'];?>" data-http="<?php echo $_SERVER['HTTP_HOST'].'/taipei/index.php?p=';?>" data-webuse="<?php echo $_SERVER['HTTP_HOST'].'/REC/index.php?p='.$member['preach_sno'];?>"data-lineuse="https://social-plugins.line.me/lineit/share?url=http://<?php echo $_SERVER['HTTP_HOST'].'/REC/index.php?p='.$member['preach_sno'].'&text=日期：'.$member['preach_dt'].'%0D%0A主題：'.$member['preach_subject'].'%0D%0A主領：'.$member['preach_pm'];?>" data-fbuse="https://www.facebook.com/sharer/sharer.php?u=<?php echo $_SERVER['HTTP_HOST'].'/REC/index.php?p='.$member['preach_sno'];?>"data-plurkuse="https://plurk.com/?qualifier=shares&status=http://<?php echo $_SERVER['HTTP_HOST'].'/REC/index.php?p='.$member['preach_sno'].'%0D%0A日期：'.$member['preach_dt'].'%0D%0A主題：'.$member['preach_subject'].'%0D%0A主領：'.$member['preach_pm'];?>" >
+              
+              <img class="play" src='./images/play.png'>
+              </div>
+            </td>
+            <td class="tdtxt3">
+                <a href="<?php echo '../download/service/'.$Y.'/'.$M.'/'.$member['file_name'];?>" download><img class="download" src='./images/download.png'></a></a>
+            </td>
+            <!-- <td class="tdtxt3">
+              <a href="https://social-plugins.line.me/lineit/share?url=http://<?php echo $_SERVER['HTTP_HOST'].'/download/service/'.$Y.'/'.$M.'/'.$member['file_name'].'&text=日期：'.$member['preach_dt'].'%0D%0A主題：'.$member['preach_subject'].'%0D%0A主領：'.$member['preach_pm'];?>" target="_blank"><img class="lineshare" src='./images/line-share.png'></a>
+            </td> -->
+
+          </tr>
+        <?php endforeach;?>
+      <?php else:?>
+        <tr>
+          <td colspan="4">找不到您要的錄音檔案！</td>
+        </tr>
+      <?php endif;?>
+    </table>
+
+  <?php
+    // echo $_GET['p'];
+    if($_GET['p'] != ""){
+      $data1 = get_one_rec($_GET['p']);
+      $date_time1=$data1['preach_dt'];
+      list($date1)=explode(" ", $date_time1); //取出日期部份
+      list($Y1,$M1,$D1)=explode("-",$date1); //分離出年月日以便製作時戳
+    }
+  ?>
+  <!-- 頁底 -->
+  <?php include_once './footer.php'; ?>
+  <div class="video_player">
+    <div class="video_box"><a class="close"><span>＋</span></a>
+      <!-- <embed src="" controls="controls" autoplay="autoplay" loop> -->
+      <audio src="" controls="controls" autoplay="autoplay" loop></audio>
+      <div class="share">
+        <span>分享：</span>
+        <div class="weblink">
+          <a href=""><img class="lineshare" src="./images/link.png"></a>
+        </div>
+        <div class="linelink">
+          <a href="" ><img class="lineshare" src="./images/line-share.png"></a>
+        </div>
+        <div class="fblink">
+          <a href=""><img class="lineshare" src="./images/fb-share.png"></a>
+        </div>
+        <div class="plurklink">
+          <a href=""><img class="lineshare" src="./images/plurk-share.png"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+        var shareLink = "<?php echo '/download/service/'.$Y1.'/'.$M1.'/'.$data1['file_name']; ?>";
+  </script>
+  </body>
+</html>
+
