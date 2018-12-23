@@ -556,7 +556,10 @@ only screen and (max-width: 760px),
 		left: -9999px;
 	}
 	
-	tr { border: 1px solid #ccc; }
+  tr { 
+    border: 1px solid #ccc; 
+    border-bottom: 5px solid #29abe2;
+  }
 	
 	td { 
 		/* Behave  like a "row" */
