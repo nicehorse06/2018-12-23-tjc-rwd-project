@@ -585,10 +585,8 @@ only screen and (max-width: 760px),
 	td:nth-of-type(1):before { content: "日期"; }
 	td:nth-of-type(2):before { content: "主題"; }
 	td:nth-of-type(3):before { content: "主領人"; }
-	td:nth-of-type(4):before { content: "播放"; }
-  td:nth-of-type(5):before { content: "下載"; }
   
-  td.tdtxt1, td.tdtxt0, td.tdtxt2, td.tdtxt3   {
+  td.tdtxt1, td.tdtxt0, td.tdtxt2   {
     border-style: solid;
     border-color: #29abe2;
     border-radius: 7px;
@@ -599,5 +597,18 @@ only screen and (max-width: 760px),
     text-align: center;
     border-width: 1.5px;
     padding: 0 0 0 50%;
+  }
+
+  td.tdtxt3 {
+    display: inline-block;
+    width: 32.5%;
+    border-style: solid;
+    border-color: #29abe2;
+    border-radius: 7px;
+    color: #29abe2;
+    font-size: 12px;
+    height: 25px;
+    text-align: center;
+    border-width: 1.5px;
   }
 }

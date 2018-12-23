@@ -121,6 +121,8 @@ require_once './php/functions.php';
         <th class="title2">主領人</th>
         <th class="title3">播放</th>
         <th class="title3">下載</th>
+        <th class="title3">連結</th>
+
         <!-- <th class="title3">分享</th>    -->
         <!-- Full texts   -->
       </tr>
@@ -198,31 +200,21 @@ require_once './php/functions.php';
             <!-- <td class="tdtxt3">
               <a href="https://social-plugins.line.me/lineit/share?url=http://<?php echo $_SERVER['HTTP_HOST'].'/download/service/'.$Y.'/'.$M.'/'.$member['file_name'].'&text=日期：'.$member['preach_dt'].'%0D%0A主題：'.$member['preach_subject'].'%0D%0A主領：'.$member['preach_pm'];?>" target="_blank"><img class="lineshare" src='./images/line-share.png'></a>
             </td> -->
+            <td class="tdtxt3">超連結</td>
+
 
           </tr>
         <?php endforeach;?>
       <?php else:?>
       <!--  這段為範例，可移除 -->
-      <tr>
-        <td class="tdtxt0 data-th">2019/12/13</td>
-        <td class="tdtxt1 data-th">團契一家</td>
-        <td class="tdtxt2 data-th">Jimmy</td>
-        <td class="tdtxt3 data-th">播放鈕</td>
-        <td class="tdtxt3">下載鈕</td>
-      </tr>
-      <tr>
-          <td class="tdtxt0 data-th">2019/12/13</td>
-          <td class="tdtxt1 data-th">團契一家</td>
-          <td class="tdtxt2 data-th">Jimmy</td>
-          <td class="tdtxt3 data-th">播放鈕</td>
-          <td class="tdtxt3">下載鈕</td>
-        </tr>
         <tr>
             <td class="tdtxt0 data-th">2019/12/13</td>
             <td class="tdtxt1 data-th">團契一家</td>
             <td class="tdtxt2 data-th">Jimmy</td>
-            <td class="tdtxt3 data-th">播放鈕</td>
-            <td class="tdtxt3">下載鈕</td>
+            <td class="tdtxt3 data-th">D</td>
+            <td class="tdtxt3">下載</td>
+            <td class="tdtxt3">超連結</td>
+
           </tr>
        <!--  範例結束 -->
         <tr>
