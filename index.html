@@ -130,7 +130,7 @@ require_once './php/functions.php';
       <?php if($members):?>
         <?php foreach($members as $member):?>
           <tr>
-            <td class="tdtxt0 data-th">
+            <td class="tdtxt0 data-th"><div class='div-border'>
               
               <!-- <?php 
               if( $searchDate !="$nowyear"){
@@ -179,6 +179,7 @@ require_once './php/functions.php';
                 
               }
               ?> -->
+            </div>
             </td>
             <!-- <td class="tdtxt0"> -->
             <?php 
@@ -186,8 +187,8 @@ require_once './php/functions.php';
               // echo $member['preach_time']; 
             ?>
             <!-- </td> -->
-            <td class="tdtxt1 data-th"><?php echo $member['preach_subject'];?></td>
-            <td class="tdtxt2 data-th"><?php echo $member['preach_pm'];?></td>
+            <td class="tdtxt1 data-th"><div class='div-border'><?php echo $member['preach_subject'];?></div></td>
+            <td class="tdtxt2 data-th"><div class='div-border'><?php echo $member['preach_pm'];?></div></td>
             <td class="tdtxt3 data-th">
               <div class="audio_link" data-link="<?php echo $member['preach_sno'];?>" data-audio="<?php echo '../download/service/'.$Y.'/'.$M.'/'.$member['file_name'];?>" data-http="<?php echo $_SERVER['HTTP_HOST'].'/taipei/index.php?p=';?>" data-webuse="<?php echo $_SERVER['HTTP_HOST'].'/REC/index.php?p='.$member['preach_sno'];?>"data-lineuse="https://social-plugins.line.me/lineit/share?url=http://<?php echo $_SERVER['HTTP_HOST'].'/REC/index.php?p='.$member['preach_sno'].'&text=日期：'.$member['preach_dt'].'%0D%0A主題：'.$member['preach_subject'].'%0D%0A主領：'.$member['preach_pm'];?>" data-fbuse="https://www.facebook.com/sharer/sharer.php?u=<?php echo $_SERVER['HTTP_HOST'].'/REC/index.php?p='.$member['preach_sno'];?>"data-plurkuse="https://plurk.com/?qualifier=shares&status=http://<?php echo $_SERVER['HTTP_HOST'].'/REC/index.php?p='.$member['preach_sno'].'%0D%0A日期：'.$member['preach_dt'].'%0D%0A主題：'.$member['preach_subject'].'%0D%0A主領：'.$member['preach_pm'];?>" >
               
@@ -208,9 +209,9 @@ require_once './php/functions.php';
       <?php else:?>
       <!--  這段為範例，可移除 -->
         <tr>
-            <td class="tdtxt0 data-th">2019/12/13</td>
-            <td class="tdtxt1 data-th">團契一家</td>
-            <td class="tdtxt2 data-th">Jimmy</td>
+            <td class="tdtxt0 data-th"><div class='div-border'>2019/12/13</div></td>
+            <td class="tdtxt1 data-th"><div class='div-border'>團契一家</div></td>
+            <td class="tdtxt2 data-th"><div class='div-border'>Jimmy</div></td>
             <td class="tdtxt3 data-th">D</td>
             <td class="tdtxt3">下載</td>
             <td class="tdtxt3">超連結</td>
